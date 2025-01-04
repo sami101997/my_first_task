@@ -58,7 +58,7 @@ class ContactManager:
                     existing_name = existing_contact[0]
                     existing_country_code = existing_contact[2]
                     
-                    merged_name = self.merge_names(existing_name, contact.name)
+                    merged_name = self.merged_names(existing_name, contact.name)
 
                     merged_country_code = existing_country_code  
                     update_query = """
@@ -76,7 +76,7 @@ class ContactManager:
         except sqlite3.Error as e:
             print(e)
 
-    def merge_names(self, existing_name, new_name):
+    def merged_names(self, existing_name, new_name):
         """
         Merge names if they are from the same person. 
         This can be a simple merging strategy or a more complex logic (e.g., fuzzy matching).
@@ -137,6 +137,7 @@ def main():
                     if normalized_phone_number:
                         contact = Contact(name, normalized_phone_number, country_code)
                         contact_manager.insert_or_update_contact(contact)
+                        contact_manager.merged_names(name, normalized_phone_number)
         except FileNotFoundError:
             print(f"File {file_name} not found")
 
